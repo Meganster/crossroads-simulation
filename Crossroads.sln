@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.168
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Crossroads", "Crossroads\Crossroads.csproj", "{62B2CEB8-5CE6-41E0-A460-0E5BC3716F5B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimSharp", "SimSharp\SimSharp.csproj", "{83572396-E19A-4CFB-B6F9-A8848191BC57}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CrossroadsWeb", "CrossroadsWeb\CrossroadsWeb.csproj", "{353D462F-2FE0-4E20-93AA-1D52F508242E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{62B2CEB8-5CE6-41E0-A460-0E5BC3716F5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{62B2CEB8-5CE6-41E0-A460-0E5BC3716F5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{62B2CEB8-5CE6-41E0-A460-0E5BC3716F5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{62B2CEB8-5CE6-41E0-A460-0E5BC3716F5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{83572396-E19A-4CFB-B6F9-A8848191BC57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{83572396-E19A-4CFB-B6F9-A8848191BC57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{83572396-E19A-4CFB-B6F9-A8848191BC57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{83572396-E19A-4CFB-B6F9-A8848191BC57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{353D462F-2FE0-4E20-93AA-1D52F508242E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{353D462F-2FE0-4E20-93AA-1D52F508242E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{353D462F-2FE0-4E20-93AA-1D52F508242E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{353D462F-2FE0-4E20-93AA-1D52F508242E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3DA790D0-5C21-4D08-8A19-35EC31562BBD}
+	EndGlobalSection
+EndGlobal

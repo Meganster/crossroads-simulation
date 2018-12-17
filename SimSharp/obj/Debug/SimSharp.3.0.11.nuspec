@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SimSharp</id>
+    <version>3.0.11</version>
+    <authors>Andreas Beham</authors>
+    <owners>Andreas Beham</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/abeham/SimSharp/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/abeham/SimSharp</projectUrl>
+    <description>Sim# aims to port the concepts used in SimPy (https://pypi.python.org/pypi/simpy) to the .NET world. It is implemented in C# and builds on the .NET Framework 4.0. Sim# uses an efficient event queue (adapted from https://bitbucket.org/BlueRaja/high-speed-priority-queue-for-c) that allows to compute models very fast. Simulating 10 years of the MachineShop sample (http://simpy.readthedocs.org/en/latest/examples/machine_shop.html) that uses preemptive resources requires only 2.5s on a Core i7 2.6Ghz. This model generates more than 5 million events.
+
+SimPy allows to model processes easily and with little boiler plate code. A process is described as a method that yields events. When an event is yielded, the process waits on it. Processes are themselves events and so it is convenient to spawn sub-processes that can either be waited upon or that run next to each other. There is no need to inherit from classes or understand a complex object oriented design.</description>
+    <releaseNotes>3.0.11
+ - Fixed bug that would cause an infinite loop in ResourcePool when requesting unavailable objects
+ 
+ 3.0.10
+ - Added target for .NET Standard 2.0 in addition to .NET Framework 4 and .NET Framework 4.5
+ - Fixed bug that would allow a process to continue if it yielded a failed process that has already been processed
+
+3.0.9
+- Fixed bug that would not dispose of resource requests if they are released before they are processed</releaseNotes>
+    <copyright>Andreas Beham</copyright>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.dll" target="lib\net45\SimSharp.dll" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.xml" target="lib\net45\SimSharp.xml" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\netstandard2.0\SimSharp.dll" target="lib\netstandard2.0\SimSharp.dll" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\netstandard2.0\SimSharp.xml" target="lib\netstandard2.0\SimSharp.xml" />
+  </files>
+</package>

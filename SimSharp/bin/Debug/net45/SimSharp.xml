@@ -1,0 +1,1542 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>SimSharp</name>
+    </assembly>
+    <members>
+        <member name="T:SimSharp.EventQueue">
+            <summary>
+            An implementation of a min-Priority Queue using a heap.  Has O(1) .Contains()!
+            See https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp/wiki/Getting-Started for more information
+            </summary>
+            <remarks>
+            There are modifications so that the type is not generic anymore and can only hold values of type EventQueueNode
+            </remarks>
+        </member>
+        <member name="M:SimSharp.EventQueue.#ctor(System.Int32)">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">EventQueueNodehe max nodes ever allowed to be enqueued (going over this will cause an exception)</param>
+        </member>
+        <member name="P:SimSharp.EventQueue.Count">
+            <summary>
+            Returns the number of nodes in the queue.  O(1)
+            </summary>
+        </member>
+        <member name="P:SimSharp.EventQueue.MaxSize">
+            <summary>
+            Returns the maximum number of items that can be enqueued at once in this queue.  Once you hit this number (ie. once Count == MaxSize),
+            attempting to enqueue another item will throw an exception.  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.Clear">
+            <summary>
+            Removes every node from the queue.  O(n) (So, don't do this often!)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.Contains(SimSharp.EventQueueNode)">
+            <summary>
+            Returns (in O(1)!) whether the given node is in the queue.  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.Enqueue(System.DateTime,SimSharp.Event,System.Int32)">
+            <summary>
+            Enqueue a node - .Priority must be set beforehand!  O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.HasHigherPriority(SimSharp.EventQueueNode,SimSharp.EventQueueNode)">
+            <summary>
+            Returns true if 'higher' has higher priority than 'lower', false otherwise.
+            Note that calling HasHigherPriority(node, node) (ie. both arguments the same node) will return false
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.Dequeue">
+            <summary>
+            Removes the head of the queue (node with highest priority; ties are broken by order of insertion), and returns it.  O(log n)
+            </summary>
+        </member>
+        <member name="P:SimSharp.EventQueue.First">
+            <summary>
+            Returns the head of the queue, without removing it (use Dequeue() for that).  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.UpdatePriority(SimSharp.EventQueueNode,System.DateTime,System.Int32)">
+            <summary>
+            This method must be called on a node every time its priority changes while it is in the queue.  
+            <b>Forgetting to call this method will result in a corrupted queue!</b>
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.Remove(SimSharp.EventQueueNode)">
+            <summary>
+            Removes a node from the queue.  Note that the node does not need to be the head of the queue.  O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.EventQueue.IsValidQueue">
+            <summary>
+            <b>Should not be called in production code.</b>
+            Checks to make sure the queue is still in a valid state.  Used for testing/debugging the queue.
+            </summary>
+        </member>
+        <member name="P:SimSharp.EventQueueNode.PrimaryPriority">
+            <summary>
+            The Priority to insert this node at. Must be set BEFORE adding a node to the queue.
+            </summary>
+        </member>
+        <member name="P:SimSharp.EventQueueNode.SecondaryPriority">
+            <summary>
+            An integer priority that will be used to distinguish nodes with the same
+            <see cref="P:SimSharp.EventQueueNode.PrimaryPriority"/> and before the <see cref="P:SimSharp.EventQueueNode.InsertionIndex"/> is used.
+            Must be set BEFORE adding a node to the queue.
+            </summary>
+            <remarks>
+            A lower value means higher priority, thus int.MinValue has highest priority.
+            </remarks>
+        </member>
+        <member name="P:SimSharp.EventQueueNode.Event">
+            <summary>
+            The event that is associated with this node.
+            </summary>
+        </member>
+        <member name="P:SimSharp.EventQueueNode.InsertionIndex">
+            <summary>
+            <b>Used by the priority queue - do not edit this value.</b>
+            Represents the order the node was inserted in
+            </summary>
+            <remarks>
+            This is unique among all inserted nodes and thus represents the third and final priority.
+            </remarks>
+        </member>
+        <member name="P:SimSharp.EventQueueNode.QueueIndex">
+            <summary>
+            <b>Used by the priority queue - do not edit this value.</b>
+            Represents the current position in the queue
+            </summary>
+        </member>
+        <member name="T:SimSharp.GenericPriorityQueue`2">
+            <summary>
+            A copy of StablePriorityQueue which also has generic explicit priority-type
+            </summary>
+            <remarks>
+            Original sources from https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
+            </remarks>
+            <typeparam name="TItem">The values in the queue.  Must extend the GenericPriorityQueue class</typeparam>
+            <typeparam name="TPriority">The priority-type.  Must extend IComparable&lt;TPriority&gt;</typeparam>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.#ctor(System.Int32)">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">The max nodes ever allowed to be enqueued (going over this will cause undefined behavior)</param>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.#ctor(System.Int32,System.Collections.Generic.IComparer{`1})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">The max nodes ever allowed to be enqueued (going over this will cause undefined behavior)</param>
+            <param name="comparer">The comparer used to compare TPriority values.</param>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.#ctor(System.Int32,System.Comparison{`1})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">The max nodes ever allowed to be enqueued (going over this will cause undefined behavior)</param>
+            <param name="comparer">The comparison function to use to compare TPriority values</param>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueue`2.Count">
+            <summary>
+            Returns the number of nodes in the queue.
+            O(1)
+            </summary>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueue`2.MaxSize">
+            <summary>
+            Returns the maximum number of items that can be enqueued at once in this queue.  Once you hit this number (ie. once Count == MaxSize),
+            attempting to enqueue another item will cause undefined behavior.  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.Clear">
+            <summary>
+            Removes every node from the queue.
+            O(n) (So, don't do this often!)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.Contains(`0)">
+            <summary>
+            Returns (in O(1)!) whether the given node is in the queue.  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.Enqueue(`0,`1)">
+            <summary>
+            Enqueue a node to the priority queue.  Lower values are placed in front. Ties are broken by first-in-first-out.
+            If the queue is full, the result is undefined.
+            If the node is already enqueued, the result is undefined.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.HasHigherPriority(`0,`0)">
+            <summary>
+            Returns true if 'higher' has higher priority than 'lower', false otherwise.
+            Note that calling HasHigherPriority(node, node) (ie. both arguments the same node) will return false
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.Dequeue">
+            <summary>
+            Removes the head of the queue (node with minimum priority; ties are broken by order of insertion), and returns it.
+            If queue is empty, result is undefined
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.Resize(System.Int32)">
+            <summary>
+            Resize the queue so it can accept more nodes.  All currently enqueued nodes are remain.
+            Attempting to decrease the queue size to a size too small to hold the existing nodes results in undefined behavior
+            O(n)
+            </summary>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueue`2.First">
+            <summary>
+            Returns the head of the queue, without removing it (use Dequeue() for that).
+            If the queue is empty, behavior is undefined.
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.UpdatePriority(`0,`1)">
+            <summary>
+            This method must be called on a node every time its priority changes while it is in the queue.  
+            <b>Forgetting to call this method will result in a corrupted queue!</b>
+            Calling this method on a node not in the queue results in undefined behavior
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.Remove(`0)">
+            <summary>
+            Removes a node from the queue.  The node does not need to be the head of the queue.  
+            If the node is not in the queue, the result is undefined.  If unsure, check Contains() first
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`2.IsValidQueue">
+            <summary>
+            <b>Should not be called in production code.</b>
+            Checks to make sure the queue is still in a valid state.  Used for testing/debugging the queue.
+            </summary>
+        </member>
+        <member name="T:SimSharp.GenericPriorityQueue`1">
+            <summary>
+            A copy of StablePriorityQueue where the items themselves contain an implicit priority.
+            </summary>
+            <remarks>
+            Either <typeparamref name="TItem"/> implements IComparable&lt;typeparamref name="TItem"/>&gt; or
+            a custom comparer must be provided.
+            </remarks>
+            <typeparam name="TItem">The values in the queue. Must extend the GenericPriorityQueueNode class</typeparam>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.#ctor(System.Int32)">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">The max nodes ever allowed to be enqueued (going over this will cause undefined behavior)</param>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.#ctor(System.Int32,System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">The max nodes ever allowed to be enqueued (going over this will cause undefined behavior)</param>
+            <param name="comparer">The comparer used to compare TPriority values.</param>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.#ctor(System.Int32,System.Comparison{`0})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="maxNodes">The max nodes ever allowed to be enqueued (going over this will cause undefined behavior)</param>
+            <param name="comparer">The comparison function to use to compare TPriority values</param>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueue`1.Count">
+            <summary>
+            Returns the number of nodes in the queue.
+            O(1)
+            </summary>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueue`1.MaxSize">
+            <summary>
+            Returns the maximum number of items that can be enqueued at once in this queue.  Once you hit this number (ie. once Count == MaxSize),
+            attempting to enqueue another item will cause undefined behavior.  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.Clear">
+            <summary>
+            Removes every node from the queue.
+            O(n) (So, don't do this often!)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.Contains(`0)">
+            <summary>
+            Returns (in O(1)!) whether the given node is in the queue.  O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.Enqueue(`0)">
+            <summary>
+            Enqueue a node to the priority queue.  Lower values are placed in front. Ties are broken by first-in-first-out.
+            If the queue is full, the result is undefined.
+            If the node is already enqueued, the result is undefined.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.HasHigherPriority(`0,`0)">
+            <summary>
+            Returns true if 'higher' has higher priority than 'lower', false otherwise.
+            Note that calling HasHigherPriority(node, node) (ie. both arguments the same node) will return false
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.Dequeue">
+            <summary>
+            Removes the head of the queue (node with minimum priority; ties are broken by order of insertion), and returns it.
+            If queue is empty, result is undefined
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.Resize(System.Int32)">
+            <summary>
+            Resize the queue so it can accept more nodes.  All currently enqueued nodes are remain.
+            Attempting to decrease the queue size to a size too small to hold the existing nodes results in undefined behavior
+            O(n)
+            </summary>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueue`1.First">
+            <summary>
+            Returns the head of the queue, without removing it (use Dequeue() for that).
+            If the queue is empty, behavior is undefined.
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.UpdatePriority(`0)">
+            <summary>
+            This method must be called on a node every time its priority changes while it is in the queue.  
+            <b>Forgetting to call this method will result in a corrupted queue!</b>
+            Calling this method on a node not in the queue results in undefined behavior
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.Remove(`0)">
+            <summary>
+            Removes a node from the queue.  The node does not need to be the head of the queue.  
+            If the node is not in the queue, the result is undefined.  If unsure, check Contains() first
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.GenericPriorityQueue`1.IsValidQueue">
+            <summary>
+            <b>Should not be called in production code.</b>
+            Checks to make sure the queue is still in a valid state.  Used for testing/debugging the queue.
+            </summary>
+        </member>
+        <member name="T:SimSharp.GenericPriorityQueueNode">
+            <summary>
+            A node class for the generic priority queue
+            </summary>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueueNode.QueueIndex">
+            <summary>
+            Represents the current position in the queue
+            </summary>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueueNode.InsertionIndex">
+            <summary>
+            Represents the order the node was inserted in
+            </summary>
+        </member>
+        <member name="T:SimSharp.GenericPriorityQueueNode`1">
+            <summary>
+            A node class for the generic priority queue with an explicit priority type
+            </summary>
+            <remarks>
+            Original sources from https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
+            </remarks>
+            <typeparam name="TPriority"></typeparam>
+        </member>
+        <member name="P:SimSharp.GenericPriorityQueueNode`1.Priority">
+            <summary>
+            The Priority to insert this node at.  Must be set BEFORE adding a node to the queue (ideally just once, in the node's constructor).
+            Should not be manually edited once the node has been enqueued - use queue.UpdatePriority() instead
+            </summary>
+        </member>
+        <member name="T:SimSharp.SimplePriorityQueue`2">
+            <summary>
+            A simplified priority queue implementation.  Is stable, auto-resizes, and thread-safe, at the cost of being slightly slower than
+            FastPriorityQueue
+            Methods tagged as O(1) or O(log n) are assuming there are no duplicates.  Duplicates may increase the algorithmic complexity.
+            </summary>
+            <remarks>
+            Original sources from https://github.com/BlueRaja/High-Speed-Priority-Queue-for-C-Sharp
+            </remarks>
+            <typeparam name="TItem">The type to enqueue</typeparam>
+            <typeparam name="TPriority">The priority-type to use for nodes.  Must extend IComparable&lt;TPriority&gt;</typeparam>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.#ctor">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.#ctor(System.Collections.Generic.IComparer{`1})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="comparer">The comparer used to compare TPriority values.  Defaults to Comparer&lt;TPriority&gt;.default</param>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.#ctor(System.Comparison{`1})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="comparer">The comparison function to use to compare TPriority values</param>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.GetExistingNode(`0)">
+            <summary>
+            Given an item of type T, returns the exist SimpleNode in the queue
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.AddToNodeCache(SimSharp.SimplePriorityQueue{`0,`1}.SimpleNode)">
+            <summary>
+            Adds an item to the Node-cache to allow for many methods to be O(1) or O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.RemoveFromNodeCache(SimSharp.SimplePriorityQueue{`0,`1}.SimpleNode)">
+            <summary>
+            Removes an item to the Node-cache to allow for many methods to be O(1) or O(log n) (assuming no duplicates)
+            </summary>
+        </member>
+        <member name="P:SimSharp.SimplePriorityQueue`2.Count">
+            <summary>
+            Returns the number of nodes in the queue.
+            O(1)
+            </summary>
+        </member>
+        <member name="P:SimSharp.SimplePriorityQueue`2.First">
+            <summary>
+            Returns the head of the queue, without removing it (use Dequeue() for that).
+            Throws an exception when the queue is empty.
+            O(1)
+            </summary>
+        </member>
+        <member name="P:SimSharp.SimplePriorityQueue`2.Peek">
+            <summary>
+            Returns the top priority of the queue.
+            Throws an exception when the queue is empty.
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.Clear">
+            <summary>
+            Removes every node from the queue.
+            O(n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.Contains(`0)">
+            <summary>
+            Returns whether the given item is in the queue.
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.Dequeue">
+            <summary>
+            Removes the head of the queue (node with minimum priority; ties are broken by order of insertion), and returns it.
+            If queue is empty, throws an exception
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.EnqueueNoCache(`0,`1)">
+            <summary>
+            Enqueue the item with the given priority, without calling AddToNodeCache(node)
+            </summary>
+            <param name="item"></param>
+            <param name="priority"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.Enqueue(`0,`1)">
+            <summary>
+            Enqueue a node to the priority queue.  Lower values are placed in front. Ties are broken by first-in-first-out.
+            This queue automatically resizes itself, so there's no concern of the queue becoming 'full'.
+            Duplicates and null-values are allowed.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.EnqueueWithoutDuplicates(`0,`1)">
+            <summary>
+            Enqueue a node to the priority queue if it doesn't already exist.  Lower values are placed in front. Ties are broken by first-in-first-out.
+            This queue automatically resizes itself, so there's no concern of the queue becoming 'full'.  Null values are allowed.
+            Returns true if the node was successfully enqueued; false if it already exists.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.Remove(`0)">
+            <summary>
+            Removes an item from the queue.  The item does not need to be the head of the queue.  
+            If the item is not in the queue, an exception is thrown.  If unsure, check Contains() first.
+            If multiple copies of the item are enqueued, only the first one is removed. 
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.UpdatePriority(`0,`1)">
+            <summary>
+            Call this method to change the priority of an item.
+            Calling this method on a item not in the queue will throw an exception.
+            If the item is enqueued multiple times, only the first one will be updated.
+            (If your requirements are complex enough that you need to enqueue the same item multiple times <i>and</i> be able
+            to update all of them, please wrap your items in a wrapper class so they can be distinguished).
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.GetPriority(`0)">
+            <summary>
+            Returns the priority of the given item.
+            Calling this method on a item not in the queue will throw an exception.
+            If the item is enqueued multiple times, only the priority of the first will be returned.
+            (If your requirements are complex enough that you need to enqueue the same item multiple times <i>and</i> be able
+            to query all their priorities, please wrap your items in a wrapper class so they can be distinguished).
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.TryFirst(`0@)">
+            Get the head of the queue, without removing it (use TryDequeue() for that).
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and First
+            Returns true if successful, false otherwise
+            O(1)
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.TryDequeue(`0@)">
+            <summary>
+            Removes the head of the queue (node with minimum priority; ties are broken by order of insertion), and sets it to first.
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and Dequeue()
+            Returns true if successful; false if queue was empty
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.TryRemove(`0)">
+            <summary>
+            Attempts to remove an item from the queue.  The item does not need to be the head of the queue.  
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and Remove()
+            Returns true if the item was successfully removed, false if it wasn't in the queue.
+            If multiple copies of the item are enqueued, only the first one is removed. 
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.TryUpdatePriority(`0,`1)">
+            <summary>
+            Call this method to change the priority of an item.
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and UpdatePriority()
+            If the item is enqueued multiple times, only the first one will be updated.
+            (If your requirements are complex enough that you need to enqueue the same item multiple times <i>and</i> be able
+            to update all of them, please wrap your items in a wrapper class so they can be distinguished).
+            Returns true if the item priority was updated, false otherwise.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`2.TryGetPriority(`0,`1@)">
+            <summary>
+            Attempt to get the priority of the given item.
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and GetPriority()
+            If the item is enqueued multiple times, only the priority of the first will be returned.
+            (If your requirements are complex enough that you need to enqueue the same item multiple times <i>and</i> be able
+            to query all their priorities, please wrap your items in a wrapper class so they can be distinguished).
+            Returns true if the item was found in the queue, false otherwise
+            O(1)
+            </summary>
+        </member>
+        <member name="T:SimSharp.SimplePriorityQueue`1">
+            <summary>
+            A simplified priority queue implementation.  Is stable, auto-resizes, and thread-safe, at the cost of being slightly slower than
+            FastPriorityQueue
+            Methods tagged as O(1) or O(log n) are assuming there are no duplicates.  Duplicates may increase the algorithmic complexity.
+            </summary>
+            <typeparam name="TItem">The type to enqueue</typeparam>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.#ctor">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.#ctor(System.Collections.Generic.IComparer{`0})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="comparer">The comparer used to compare TPriority values.  Defaults to Comparer&lt;TPriority&gt;.default</param>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.#ctor(System.Comparison{`0})">
+            <summary>
+            Instantiate a new Priority Queue
+            </summary>
+            <param name="comparer">The comparison function to use to compare TPriority values</param>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.GetExistingNode(`0)">
+            <summary>
+            Given an item of type T, returns the exist SimpleNode in the queue
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.AddToNodeCache(SimSharp.SimplePriorityQueue{`0}.SimpleNode)">
+            <summary>
+            Adds an item to the Node-cache to allow for many methods to be O(1) or O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.RemoveFromNodeCache(SimSharp.SimplePriorityQueue{`0}.SimpleNode)">
+            <summary>
+            Removes an item to the Node-cache to allow for many methods to be O(1) or O(log n) (assuming no duplicates)
+            </summary>
+        </member>
+        <member name="P:SimSharp.SimplePriorityQueue`1.Count">
+            <summary>
+            Returns the number of nodes in the queue.
+            O(1)
+            </summary>
+        </member>
+        <member name="P:SimSharp.SimplePriorityQueue`1.First">
+            <summary>
+            Returns the head of the queue, without removing it (use Dequeue() for that).
+            Throws an exception when the queue is empty.
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.Clear">
+            <summary>
+            Removes every node from the queue.
+            O(n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.Contains(`0)">
+            <summary>
+            Returns whether the given item is in the queue.
+            O(1)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.Dequeue">
+            <summary>
+            Removes the head of the queue (node with minimum priority; ties are broken by order of insertion), and returns it.
+            If queue is empty, throws an exception
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.EnqueueNoCache(`0)">
+            <summary>
+            Enqueue the item with the given priority, without calling AddToNodeCache(node)
+            </summary>
+            <param name="item"></param>
+            <returns></returns>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.Enqueue(`0)">
+            <summary>
+            Enqueue a node to the priority queue.  Lower values are placed in front. Ties are broken by first-in-first-out.
+            This queue automatically resizes itself, so there's no concern of the queue becoming 'full'.
+            Duplicates and null-values are allowed.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.EnqueueWithoutDuplicates(`0)">
+            <summary>
+            Enqueue a node to the priority queue if it doesn't already exist.  Lower values are placed in front. Ties are broken by first-in-first-out.
+            This queue automatically resizes itself, so there's no concern of the queue becoming 'full'.  Null values are allowed.
+            Returns true if the node was successfully enqueued; false if it already exists.
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.Remove(`0)">
+            <summary>
+            Removes an item from the queue.  The item does not need to be the head of the queue.  
+            If the item is not in the queue, an exception is thrown.  If unsure, check Contains() first.
+            If multiple copies of the item are enqueued, only the first one is removed. 
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.UpdatePriority(`0)">
+            <summary>
+            Call this method to change the priority of an item.
+            Calling this method on a item not in the queue will throw an exception.
+            If the item is enqueued multiple times, only the first one will be updated.
+            (If your requirements are complex enough that you need to enqueue the same item multiple times <i>and</i> be able
+            to update all of them, please wrap your items in a wrapper class so they can be distinguished).
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.TryFirst(`0@)">
+            Get the head of the queue, without removing it (use TryDequeue() for that).
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and First
+            Returns true if successful, false otherwise
+            O(1)
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.TryDequeue(`0@)">
+            <summary>
+            Removes the head of the queue (node with minimum priority; ties are broken by order of insertion), and sets it to first.
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and Dequeue()
+            Returns true if successful; false if queue was empty
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.TryRemove(`0)">
+            <summary>
+            Attempts to remove an item from the queue.  The item does not need to be the head of the queue.  
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and Remove()
+            Returns true if the item was successfully removed, false if it wasn't in the queue.
+            If multiple copies of the item are enqueued, only the first one is removed. 
+            O(log n)
+            </summary>
+        </member>
+        <member name="M:SimSharp.SimplePriorityQueue`1.TryUpdatePriority(`0)">
+            <summary>
+            Call this method to change the priority of an item.
+            Useful for multi-threading, where the queue may become empty between calls to Contains() and UpdatePriority()
+            If the item is enqueued multiple times, only the first one will be updated.
+            (If your requirements are complex enough that you need to enqueue the same item multiple times <i>and</i> be able
+            to update all of them, please wrap your items in a wrapper class so they can be distinguished).
+            Returns true if the item priority was updated, false otherwise.
+            O(log n)
+            </summary>
+        </member>
+        <member name="T:SimSharp.Environment">
+            <summary>
+            Environments hold the event queues, schedule and process events.
+            </summary>
+        </member>
+        <member name="T:SimSharp.Simulation">
+            <summary>
+            Simulation hold the event queues, schedule and process events.
+            </summary>
+            <remarks>
+            This class is not thread-safe against manipulation of the event queue. If you supply a termination
+            event that is set outside the simulation, please use the <see cref="T:SimSharp.ThreadSafeSimulation"/> environment.
+            
+            For most purposes <see cref="T:SimSharp.Simulation"/> is however the better and faster choice.
+            </remarks>
+        </member>
+        <member name="P:SimSharp.Simulation.DefaultTimeStepSeconds">
+            <summary>
+            Describes the number of seconds that a logical step of 1 in the *D-API takes.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Simulation.NowD">
+            <summary>
+            Calculates the logical date of the simulation by the amount of default steps
+            that have passed.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Simulation.Now">
+            <summary>
+            The current simulation time as a calendar date.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Simulation.StartDate">
+            <summary>
+            The calendar date when the simulation started. This defaults to 1970-1-1 if
+            no other date has been specified in the overloaded constructor.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Simulation.Random">
+            <summary>
+            The random number generator that is to be used in all events in
+            order to produce reproducible results.
+            </summary>
+        </member>
+        <member name="M:SimSharp.Simulation.Process(System.Collections.Generic.IEnumerable{SimSharp.Event},System.Int32)">
+            <summary>
+            Creates a new process from an event generator. The process is automatically
+            scheduled to be started at the current simulation time.
+            </summary>
+            <param name="generator">The generator function that represents the process.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+            <returns>The scheduled process that was created.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.TimeoutD(System.Double,System.Int32)">
+            <summary>
+            Creates and returns a new timeout.
+            </summary>
+            <param name="delay">The time after which the timeout is fired.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+            <returns>The scheduled timeout event that was created.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.Timeout(System.TimeSpan,System.Int32)">
+            <summary>
+            Creates and returns a new timeout.
+            </summary>
+            <param name="delay">The time after which the timeout is fired.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+            <returns>The scheduled timeout event that was created.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.Schedule(SimSharp.Event,System.Int32)">
+            <summary>
+            Schedules an event to occur at the same simulation time as the call was made.
+            </summary>
+            <param name="event">The event that should be scheduled.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.Simulation.Schedule(System.TimeSpan,SimSharp.Event,System.Int32)">
+            <summary>
+            Schedules an event to occur after a certain (positive) delay.
+            </summary>
+            <exception cref="T:System.ArgumentException">
+            Thrown when <paramref name="delay"/> is negative.
+            </exception>
+            <param name="delay">The (positive) delay after which the event should be fired.</param>
+            <param name="event">The event that should be scheduled.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.Simulation.Run(SimSharp.Event)">
+            <summary>
+            Run until a certain event is processed.
+            </summary>
+            <remarks>
+            This simulation environment is not thread-safe, thus triggering this event outside the environment
+            leads to potential race conditions. Please use the <see cref="T:SimSharp.ThreadSafeSimulation"/> environment in case you
+            require this functionality. Note that the performance of <see cref="T:SimSharp.ThreadSafeSimulation"/> is lower due to locking.
+            
+            For real-time based termination, you can also call <see cref="M:SimSharp.Simulation.StopAsync"/> which sets a flag indicating the simulation
+            to stop before processing the next event.
+            </remarks>
+            <param name="stopEvent">The event that stops the simulation.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SimSharp.Simulation.Step">
+            <summary>
+            Performs a single step of the simulation, i.e. process a single event
+            </summary>
+            <remarks>
+            This method is not thread-safe
+            </remarks>
+        </member>
+        <member name="M:SimSharp.Simulation.PeekD">
+            <summary>
+            Peeks at the time of the next event in terms of the defined step
+            </summary>
+            <remarks>
+            This method is not thread-safe
+            </remarks>
+        </member>
+        <member name="M:SimSharp.Simulation.Peek">
+            <summary>
+            Peeks at the time of the next event
+            </summary>
+            <remarks>
+            This method is not thread-safe
+            </remarks>
+        </member>
+        <member name="M:SimSharp.Simulation.RandExponential(SimSharp.IRandom,System.Double)">
+            <summary>
+            Returns a number that is exponentially distributed given a certain mean.
+            </summary>
+            <remarks>
+            Unlike in other APIs here the mean should be given and not the lambda parameter.
+            </remarks>
+            <param name="random">The random number generator to use.</param>
+            <param name="mean">The mean(!) of the distribution is 1 / lambda.</param>
+            <returns>A number that is exponentially distributed</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandExponential(System.Double)">
+            <summary>
+            Returns a number that is exponentially distributed given a certain mean.
+            </summary>
+            <remarks>
+            Unlike in other APIs here the mean should be given and not the lambda parameter.
+            </remarks>
+            <param name="mean">The mean(!) of the distribution is 1 / lambda.</param>
+            <returns>A number that is exponentially distributed</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandExponential(SimSharp.IRandom,System.TimeSpan)">
+            <summary>
+            Returns a timespan that is exponentially distributed given a certain mean.
+            </summary>
+            <remarks>
+            Unlike in other APIs here the mean should be given and not the lambda parameter.
+            </remarks>
+            <param name="random">The random number generator to use.</param>
+            <param name="mean">The mean(!) of the distribution is 1 / lambda.</param>
+            <returns>A number that is exponentially distributed</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandExponential(System.TimeSpan)">
+            <summary>
+            Returns a timespan that is exponentially distributed given a certain mean.
+            </summary>
+            <remarks>
+            Unlike in other APIs here the mean should be given and not the lambda parameter.
+            </remarks>
+            <param name="mean">The mean(!) of the distribution is 1 / lambda.</param>
+            <returns>A number that is exponentially distributed</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandNormal(SimSharp.IRandom,System.Double,System.Double)">
+            <summary>
+            Uses the Marsaglia polar method to generate a random variable
+            from two uniform random distributed values.
+            </summary>
+            <remarks>
+            A spare random variable is generated from the second uniformly
+            distributed value. Thus, the two calls to the uniform random number
+            generator will be made only every second call.
+            </remarks>
+            <param name="random">The random number generator to use.</param>
+            <param name="mu">The mean of the normal distribution.</param>
+            <param name="sigma">The standard deviation of the normal distribution.</param>
+            <returns>A number that is normal distributed.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandNormal(System.Double,System.Double)">
+            <summary>
+            Uses the Marsaglia polar method to generate a random variable
+            from two uniform random distributed values.
+            </summary>
+            <remarks>
+            A spare random variable is generated from the second uniformly
+            distributed value. Thus, the two calls to the uniform random number
+            generator will be made only every second call.
+            </remarks>
+            <param name="mu">The mean of the normal distribution.</param>
+            <param name="sigma">The standard deviation of the normal distribution.</param>
+            <returns>A number that is normal distributed.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandNormal(SimSharp.IRandom,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Uses the Marsaglia polar method to generate a random variable
+            from two uniform random distributed values.
+            </summary>
+            <remarks>
+            A spare random variable is generated from the second uniformly
+            distributed value. Thus, the two calls to the uniform random number
+            generator will be made only every second call.
+            </remarks>
+            <param name="random">The random number generator to use.</param>
+            <param name="mu">The mean of the normal distribution.</param>
+            <param name="sigma">The standard deviation of the normal distribution.</param>
+            <returns>A number that is normal distributed.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandNormal(System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Uses the Marsaglia polar method to generate a random variable
+            from two uniform random distributed values.
+            </summary>
+            <remarks>
+            A spare random variable is generated from the second uniformly
+            distributed value. Thus, the two calls to the uniform random number
+            generator will be made only every second call.
+            </remarks>
+            <param name="mu">The mean of the normal distribution.</param>
+            <param name="sigma">The standard deviation of the normal distribution.</param>
+            <returns>A number that is normal distributed.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal(SimSharp.IRandom,System.Double,System.Double)">
+            <summary>
+            Returns values from a log-normal distribution with the mean
+            exp(mu + sigma^2 / 2)
+            and the standard deviation
+            sqrt([exp(sigma^2)-1] * exp(2 * mu + sigma^2))
+            </summary>
+            <param name="random">The random number generator to use.</param>
+            <param name="mu">The mu parameter of the log-normal distribution (not the mean).</param>
+            <param name="sigma">The sigma parameter of the log-normal distribution (not the standard deviation).</param>
+            <returns>A log-normal distributed random value.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal(System.Double,System.Double)">
+            <summary>
+            Returns values from a log-normal distribution with the mean
+            exp(mu + sigma^2 / 2)
+            and the standard deviation
+            sqrt([exp(sigma^2)-1] * exp(2 * mu + sigma^2))
+            </summary>
+            <param name="mu">The mu parameter of the log-normal distribution (not the mean).</param>
+            <param name="sigma">The sigma parameter of the log-normal distribution (not the standard deviation).</param>
+            <returns>A log-normal distributed random value.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal2(SimSharp.IRandom,System.Double,System.Double)">
+            <summary>
+            Returns values from a log-normal distribution with
+            the mean <paramref name="mean"/> and standard deviation <paramref name="stdev"/>.
+            </summary>
+            <param name="random">The random number generator to use.</param>
+            <param name="mean">The distribution mean.</param>
+            <param name="stdev">The distribution standard deviation.</param>
+            <returns>A log-normal distributed random value.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal2(System.Double,System.Double)">
+            <summary>
+            Returns values from a log-normal distribution with
+            the mean <paramref name="mean"/> and standard deviation <paramref name="stdev"/>.
+            </summary>
+            <param name="mean">The distribution mean.</param>
+            <param name="stdev">The distribution standard deviation.</param>
+            <returns>A log-normal distributed random value.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal(SimSharp.IRandom,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Returns a timespan value from a log-normal distribution with the mean
+            exp(mu + sigma^2 / 2)
+            and the standard deviation
+            sqrt([exp(sigma^2)-1] * exp(2 * mu + sigma^2))
+            </summary>
+            <param name="random">The random number generator to use.</param>
+            <param name="mu">The mu parameter of the log-normal distribution (not the mean).</param>
+            <param name="sigma">The sigma parameter of the log-normal distribution (not the standard deviation).</param>
+            <returns>A log-normal distributed random timespan.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal(System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Returns a timespan value from a log-normal distribution with the mean
+            exp(mu + sigma^2 / 2)
+            and the standard deviation
+            sqrt([exp(sigma^2)-1] * exp(2 * mu + sigma^2))
+            </summary>
+            <param name="mu">The mu parameter of the log-normal distribution (not the mean).</param>
+            <param name="sigma">The sigma parameter of the log-normal distribution (not the standard deviation).</param>
+            <returns>A log-normal distributed random timespan.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal2(SimSharp.IRandom,System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Returns a timespan value from a log-normal distribution with
+            the mean <paramref name="mean"/> and standard deviation <paramref name="stdev"/>.
+            </summary>
+            <param name="random">The random number generator to use.</param>
+            <param name="mean">The distribution mean.</param>
+            <param name="stdev">The distribution standard deviation.</param>
+            <returns>A log-normal distributed random timespan.</returns>
+        </member>
+        <member name="M:SimSharp.Simulation.RandLogNormal2(System.TimeSpan,System.TimeSpan)">
+            <summary>
+            Returns a timespan value from a log-normal distribution with
+            the mean <paramref name="mean"/> and standard deviation <paramref name="stdev"/>.
+            </summary>
+            <param name="mean">The distribution mean.</param>
+            <param name="stdev">The distribution standard deviation.</param>
+            <returns>A log-normal distributed random timespan.</returns>
+        </member>
+        <member name="T:SimSharp.ThreadSafeSimulation">
+            <summary>
+            Provides a simulation environment that is thread-safe against manipulations of the event queue.
+            Its performance is somewhat lower than the non-thread-safe environment (cf. <see cref="T:SimSharp.Simulation"/>)
+            due to the locking involved.
+            </summary>
+            <remarks>
+            Please carefully consider if you must really schedule the stop event in a separate thread. You can also
+            call <see cref="M:SimSharp.Simulation.StopAsync"/> to request termination after the current event has been processed.
+            
+            The simulation will still run in only one thread and execute all events sequentially.
+            </remarks>
+        </member>
+        <member name="M:SimSharp.ThreadSafeSimulation.Schedule(SimSharp.Event,System.Int32)">
+            <summary>
+            Schedules an event to occur at the same simulation time as the call was made.
+            </summary>
+            <remarks>
+            This method is thread-safe against manipulations of the event queue
+            </remarks>
+            <param name="event">The event that should be scheduled.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.ThreadSafeSimulation.Schedule(System.TimeSpan,SimSharp.Event,System.Int32)">
+            <summary>
+            Schedules an event to occur after a certain (positive) delay.
+            </summary>
+            <remarks>
+            This method is thread-safe against manipulations of the event queue
+            </remarks>
+            <exception cref="T:System.ArgumentException">
+            Thrown when <paramref name="delay"/> is negative.
+            </exception>
+            <param name="delay">The (positive) delay after which the event should be fired.</param>
+            <param name="event">The event that should be scheduled.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.ThreadSafeSimulation.Run(SimSharp.Event)">
+            <summary>
+            Run until a certain event is processed.
+            </summary>
+            <remarks>
+            This method is thread-safe against manipulations of the event queue
+            </remarks>
+            <param name="stopEvent">The event that stops the simulation.</param>
+            <returns></returns>
+        </member>
+        <member name="M:SimSharp.ThreadSafeSimulation.Step">
+            <summary>
+            Performs a single step of the simulation, i.e. process a single event
+            </summary>
+            <remarks>
+            This method is thread-safe against manipulations of the event queue
+            </remarks>
+        </member>
+        <member name="M:SimSharp.ThreadSafeSimulation.PeekD">
+            <summary>
+            Peeks at the time of the next event in terms of the defined step
+            </summary>
+            <remarks>
+            This method is thread-safe against manipulations of the event queue
+            </remarks>
+        </member>
+        <member name="M:SimSharp.ThreadSafeSimulation.Peek">
+            <summary>
+            Peeks at the time of the next event
+            </summary>
+            <remarks>
+            This method is thread-safe against manipulations of the event queue
+            </remarks>
+        </member>
+        <member name="T:SimSharp.Condition">
+            <summary>
+            Conditions are events that execute when any or all of its sub-events are executed.
+            </summary>
+        </member>
+        <member name="T:SimSharp.Event">
+            <summary>
+            The base class for all events in SimSharp.
+            An event can be in one of three states at any time:
+             - Alive: The event object exists, but is neither scheduled to
+                      be executed, nor is it already executed.
+             - Triggered: The event has been put in the event queue and is
+                          going to be executed.
+             - Processed: The event has been executed.
+            
+            Usually, the event is alive until its Trigger, Succeed, or Fail
+            method have been called. Then it becomes triggered. When the
+            Environment progresses to the event and executes its callbacks
+            the event becomes processed.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Event.Value">
+            <summary>
+            The value property can be used to return arbitrary data from a
+            process or an event. It also represents the interrupt cause to
+            a process.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Event.IsOk">
+            <summary>
+            The IsOk flag indicates if the event succeeded or failed. An event
+            that failed indicates to a waiting process that the action could
+            not be performed and that the faulting situation must be handled.
+            Typically, interrupting a process sets the IsOk flag to false.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Event.IsAlive">
+            <summary>
+            An event is alive when it is not triggered and not processed. That
+            is, when it exists in memory without being scheduled. Typically,
+            a Process is alive until its last event has been processed and the
+            process event itself is to be processed.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Event.IsProcessed">
+            <summary>
+            An event becomes processed when its callbacks have been executed.
+            Events may only be processed once and an exception will be thrown
+            if they are to be processed multiple times.
+            </summary>
+        </member>
+        <member name="P:SimSharp.Event.IsTriggered">
+            <summary>
+            An event becomes triggered when it is placed into the event queue.
+            That is, when its callbacks are going to be executed.
+            An even that is triggered may later not be failed or retriggered.
+            </summary>
+        </member>
+        <member name="M:SimSharp.Event.Trigger(SimSharp.Event,System.Int32)">
+            <summary>
+            This method schedules the event right now. It takes the IsOk state
+            and uses the <see cref="P:SimSharp.Event.Value"/> of the given <paramref name="@event"/>.
+            Thus if the given event fails, this event will also be triggered as
+            failing.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the event has already been triggered.
+            </exception>
+            <remarks>
+            The signature of this method allows it to be used as a callback.
+            </remarks>
+            <param name="event">The event that triggers this event.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.Event.Succeed(System.Object,System.Int32)">
+            <summary>
+            This method schedules the event right now. It sets IsOk state to true
+            and optionally uses also the value. If urgent is given, the event may
+            be scheduled as urgent. Urgent events are placed in a separate event
+            queue. The callbacks of urgent events are executed before normal events.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the event has already been triggered.
+            </exception>
+            <param name="value">The value that the event should use.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.Event.Fail(System.Object,System.Int32)">
+            <summary>
+            This method schedules the event right now. It sets IsOk state to false
+            and optionally uses also the value. If urgent is given, the event may
+            be scheduled as urgent. Urgent events are placed in a separate event
+            queue. The callbacks of urgent events are executed before normal events.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">
+            Thrown when the event has already been triggered.
+            </exception>
+            <param name="value">The value that the event should use.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.Event.AddCallback(System.Action{SimSharp.Event})">
+            <summary>
+            This method adds a callback to the list of callbacks. Callbacks will be
+            executed in the order they have been added.
+            </summary>
+            <param name="callback">The callback to execute when the event is being
+            processed.</param>
+        </member>
+        <member name="M:SimSharp.Event.AddCallbacks(System.Collections.Generic.IEnumerable{System.Action{SimSharp.Event}})">
+            <summary>
+            This method adds a range of callbacks to the list of callbacks. Callbacks
+            will be executed in the order they have been added.
+            </summary>
+            <param name="callbacks">The callbacks to execute when the event is being
+            processed.</param>
+        </member>
+        <member name="M:SimSharp.Event.RemoveCallback(System.Action{SimSharp.Event})">
+            <summary>
+            This method removes a callback to the list of callbacks.
+            </summary>
+            <remarks>
+            It is not checked if the callback has actually been added before and
+            no exception will be thrown if it had not been present.
+            </remarks>
+            <param name="callback">The callback to remove.</param>
+        </member>
+        <member name="M:SimSharp.Event.Process">
+            <summary>
+            This method processes the event, that is, it calls all the callbacks.
+            When it finishes it will be marked IsProcessed and cannot be processed
+            again.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">When the event has already
+            been processed.</exception>
+        </member>
+        <member name="T:SimSharp.Process">
+            <summary>
+            A Process handles the iteration of events. Processes may define steps that
+            a certain entity in the simulation has to perform. Each time the process
+            should wait it yields an event and will be resumed when that event is processed.
+            </summary>
+            <remarks>
+            Since an iterator method does not have access to its process, the method can
+            retrieve the associated Process through the ActiveProcess property of the
+            environment. Each Process sets and resets that property during Resume.
+            </remarks>
+        </member>
+        <member name="P:SimSharp.Process.Target">
+            <summary>
+            Target is the event that is expected to be executed next in the process.
+            </summary>
+        </member>
+        <member name="M:SimSharp.Process.#ctor(SimSharp.Simulation,System.Collections.Generic.IEnumerable{SimSharp.Event},System.Int32)">
+            <summary>
+            Sets up a new process.
+            The process places an initialize event into the event queue which starts
+            the process by retrieving events from the generator.
+            </summary>
+            <param name="environment">The environment in which the process lives.</param>
+            <param name="generator">The generator function of the process.</param>
+            <param name="priority">The priority if multiple processes are started at the same time.</param>
+        </member>
+        <member name="M:SimSharp.Process.Interrupt(System.Object,System.Int32)">
+            <summary>
+            This interrupts a process and causes the IsOk flag to be set to false.
+            If a process is interrupted the iterator method needs to call HandleFault()
+            before continuing to yield further events.
+            </summary>
+            <exception cref="T:System.InvalidOperationException">This is thrown in three conditions:
+             - If the process has already been triggered.
+             - If the process attempts to interrupt itself.
+             - If the process continues to yield events despite being faulted.</exception>
+            <param name="cause">The cause of the interrupt.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="M:SimSharp.Process.HandleFault">
+            <summary>
+            This method must be called to reset the IsOk flag of the process back to true.
+            The IsOk flag may be set to false if the process waited on an event that failed.
+            </summary>
+            <remarks>
+            In SimPy a faulting process would throw an exception which is then catched and
+            chained. In SimSharp catching exceptions from a yield is not possible as a yield
+            return statement may not throw an exception.
+            If a processes faulted the Value property may indicate a cause for the fault.
+            </remarks>
+            <returns>True if a faulting situation needs to be handled, false if the process
+            is okay and the last yielded event succeeded.</returns>
+        </member>
+        <member name="T:SimSharp.Timeout">
+            <summary>
+            Timeouts are simple events that are executed after a certain timespan has passed.
+            </summary>
+        </member>
+        <member name="M:SimSharp.Timeout.#ctor(SimSharp.Simulation,System.TimeSpan,System.Object,System.Boolean,System.Int32)">
+            <summary>
+            A timeout is an event that is executed after a certain timespan has passed.
+            </summary>
+            <remarks>
+            Timeout events are scheduled when they are created. They are always triggered
+            when they are created.
+            </remarks>
+            <param name="environment">The environment in which it is scheduled.</param>
+            <param name="delay">The timespan for the timeout.</param>
+            <param name="value">The value of the timeout.</param>
+            <param name="isOk">Whether the timeout should succeed or fail.</param>
+            <param name="priority">The priority to rank events at the same time (smaller value = higher priority).</param>
+        </member>
+        <member name="T:SimSharp.StopSimulationException">
+            <summary>
+            An exception that is thrown to stop the simulation.
+            </summary>
+        </member>
+        <member name="T:SimSharp.Container">
+            <summary>
+            A container holds a variable amount of a single continuous entity, e.g. water, coal, grain, etc.
+            
+            Put and Get are in FIFO order only when they can be satisfied.
+            Any put or get that can be satisfied takes precedence.
+            Put events that attempt to add more to the Container than there is capacity for and
+            Get events that remove more than there is are backlogged.
+            </summary>
+        </member>
+        <member name="T:SimSharp.FilterStore">
+            <summary>
+            A filter store is similar to a <see cref="T:SimSharp.Store"/>.
+            However, in Get it is possible to specify the property of the item wished to retrieve.
+            
+            FilterStore holds a variable number of individual items.
+            Put are always performed in FIFO order. 
+            Get are performed in FIFO order only when they match at least one item in the store.
+            </summary>
+        </member>
+        <member name="T:SimSharp.PreemptiveResource">
+            <summary>
+            A PreemptiveResource is similar to a <see cref="T:SimSharp.PriorityResource"/>. However,
+            it may be possible to interrupt a lower-priority user and hand over the resource.
+            
+            PreemptiveResource holds a fixed amount of anonymous entities.
+            Requests are processed in this order: priority, time, preemption, and finally FIFO.
+            Releases are processed in FIFO order (usually no simulation time passes for a Release).
+            </summary>
+            <remarks>
+            Working with PreemptiveResource, a process holding a request must always call
+            <see cref="M:SimSharp.Process.HandleFault"/> after yielding an event and handle a potential
+            interruption.
+            </remarks>
+        </member>
+        <member name="T:SimSharp.PriorityResource">
+            <summary>
+            A PriorityResource is similar to a <see cref="T:SimSharp.Resource"/>.
+            However, it enables prioritizing requests.
+            
+            PriorityResource holds a fixed number of anonymous entities.
+            Requests are processed in order priority first, FIFO second.
+            Releases are processed in FIFO order (usually no simulation time passes for a Release).
+            </summary>
+        </member>
+        <member name="T:SimSharp.PriorityStore">
+            <summary>
+            A PriorityStore is similar to a <see cref="T:SimSharp.Store"/>.
+            However, items are removed from the store in order of their priority.
+            
+            PriorityStore holds a variable number of individual items.
+            Put and Get are both processed in strict FIFO order.
+            </summary>
+        </member>
+        <member name="T:SimSharp.Resource">
+            <summary>
+            A resource holds a fixed number of anonymous entities.
+            
+            Requests are processed in FIFO order.
+            Releases are processed in FIFO order (usually no simulation time passes for a Release).
+            </summary>
+        </member>
+        <member name="T:SimSharp.ResourcePool">
+            <summary>
+            A ResourcePool is a crossover between a <see cref="T:SimSharp.Resource"/> and a <see cref="T:SimSharp.Store"/>.
+            There is a fixed number of non-anonymous resources.
+            
+            Requests are performed in FIFO order only when they match at least one resource in the pool.
+            Releases are processed in FIFO order (usually no simulation time passes for a Release).
+            </summary>
+        </member>
+        <member name="T:SimSharp.Store">
+            <summary>
+            The store holds a variable number of individual items.
+            The items are removed from the store in FIFO order.
+            
+            Put are processed in FIFO order.
+            Get are processed in FIFO order.
+            </summary>
+        </member>
+        <member name="T:SimSharp.FastRandom">
+            <summary>
+            A fast random number generator for .NET
+            Colin Green, January 2005
+            
+            Key points:
+             1) Based on a simple and fast xor-shift pseudo random number generator (RNG) specified in: 
+             Marsaglia, George. (2003). Xorshift RNGs.
+             http://www.jstatsoft.org/v08/i14/paper
+             
+             This particular implementation of xorshift has a period of 2^128-1. See the above paper to see
+             how this can be easily extened if you need a longer period. At the time of writing I could find no 
+             information on the period of System.Random for comparison.
+            
+             2) Faster than System.Random. Up to 8x faster, depending on which methods are called.
+            
+             3) Direct replacement for System.Random. This class implements all of the methods that System.Random 
+             does plus some additional methods. The like named methods are functionally equivalent.
+             
+             4) Allows fast re-initialisation with a seed, unlike System.Random which accepts a seed at construction
+             time which then executes a relatively expensive initialisation routine. This provides a vast speed improvement
+             if you need to reset the pseudo-random number sequence many times, e.g. if you want to re-generate the same
+             sequence of random numbers many times. An alternative might be to cache random numbers in an array, but that 
+             approach is limited by memory capacity and the fact that you may also want a large number of different sequences 
+             cached. Each sequence can be represented by a single seed value (int) when using FastRandom.
+             
+             Notes.
+             A further performance improvement can be obtained by declaring local variables as static, thus avoiding 
+             re-allocation of variables on each call. However care should be taken if multiple instances of
+             FastRandom are in use or if being used in a multi-threaded environment.
+            
+            
+            Colin Green, September 4th 2005
+              - Added NextBytesUnsafe() - commented out by default.
+              - Fixed bug in Reinitialise() - y,z and w variables were not being reset.
+                
+            Colin Green, December 2008.
+              - Fix to Next() - Was previously able to return int.MaxValue, contrary to the method's contract and comments.
+              - Modified NextBool() to use _bitMask instead of a count of remaining bits. Also reset the bit buffer in Reinitialise().
+               
+            Colin Green, 2011-08-31
+              - Added NextByte() method.
+              - Added new statically declared seedRng FastRandom to allow easy creation of multiple FastRandoms with different seeds 
+                within a single clock tick.
+                
+            Colin Green, 2011-10-04
+             - Seeds are now hashed. Without this the first random sample for nearby seeds (1,2,3, etc.) are very similar 
+               (have a similar bit pattern). Thanks to Francois Guibert for identifying this problem.
+            
+            </summary>
+        </member>
+        <member name="F:SimSharp.FastRandom.__seedRng">
+            <summary>
+            A static RNG that is used to generate seed values when constructing new instances of FastRandom.
+            This overcomes the problem whereby multiple FastRandom instances are instantiated within the same
+            tick count and thus obtain the same seed, that approach can result in extreme biases occuring 
+            in some cases depending on how the RNG is used.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.#ctor">
+            <summary>
+            Initialises a new instance using a seed generated from the class's static seed RNG.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.#ctor(System.Int32)">
+            <summary>
+            Initialises a new instance using an int value as seed.
+            This constructor signature is provided to maintain compatibility with
+            System.Random
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.Reinitialise(System.Int32)">
+            <summary>
+            Reinitialises using an int value as a seed.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.Next">
+            <summary>
+            Generates a random int over the range 0 to int.MaxValue-1.
+            MaxValue is not generated in order to remain functionally equivalent to System.Random.Next().
+            This does slightly eat into some of the performance gain over System.Random, but not much.
+            For better performance see:
+            
+            Call NextInt() for an int over the range 0 to int.MaxValue.
+            
+            Call NextUInt() and cast the result to an int to generate an int over the full Int32 value range
+            including negative values. 
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.Next(System.Int32)">
+            <summary>
+            Generates a random int over the range 0 to upperBound-1, and not including upperBound.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.Next(System.Int32,System.Int32)">
+            <summary>
+            Generates a random int over the range lowerBound to upperBound-1, and not including upperBound.
+            upperBound must be >= lowerBound. lowerBound may be negative.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextDouble">
+            <summary>
+            Generates a random double. Values returned are over the range [0, 1). That is, inclusive of 0.0 and exclusive of 1.0.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextBytes(System.Byte[])">
+            <summary>
+            Fills the provided byte array with random bytes.
+            This method is functionally equivalent to System.Random.NextBytes(). 
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextUInt">
+            <summary>
+            Generates a uint. Values returned are over the full range of a uint, 
+            uint.MinValue to uint.MaxValue, inclusive.
+            
+            This is the fastest method for generating a single random number because the underlying
+            random number generator algorithm generates 32 random bits that can be cast directly to 
+            a uint.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextInt">
+            <summary>
+            Generates a random int over the range 0 to int.MaxValue, inclusive. 
+            This method differs from Next() only in that the range is 0 to int.MaxValue
+            and not 0 to int.MaxValue-1.
+            
+            The slight difference in range means this method is slightly faster than Next()
+            but is not functionally equivalent to System.Random.Next().
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextDoubleNonZero">
+            <summary>
+            Generates a random double. Values returned are over the range (0, 1). That is, exclusive of both 0.0 and 1.0.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextBool">
+            <summary>
+            Generates a single random bit.
+            This method's performance is improved by generating 32 bits in one operation and storing them
+            ready for future calls.
+            </summary>
+        </member>
+        <member name="M:SimSharp.FastRandom.NextByte">
+            <summary>
+            Generates a signle random byte with range [0,255].
+            This method's performance is improved by generating 4 bytes in one operation and storing them
+            ready for future calls.
+            </summary>
+        </member>
+        <member name="T:SimSharp.Pcg">
+            <summary>
+            PCG (Permuted Congruential Generator) is a C# port from C the base PCG generator
+            presented in "PCG: A Family of Simple Fast Space-Efficient Statistically Good
+            Algorithms for Random Number Generation" by Melissa E. O'Neill. The code follows closely the one 
+            made available by O'Neill at her site: http://www.pcg-random.org/download.html
+            To understand how exactly this generator works read this:
+            http://www.pcg-random.org/pdf/toms-oneill-pcg-family-v1.02.pdf 
+            </summary>
+        </member>
+        <member name="P:SimSharp.Pcg.Default">
+            <summary>
+            Default instance.
+            </summary>
+        </member>
+        <member name="M:SimSharp.PcgSeed.TimeBasedSeed">
+            <summary>
+            Provides a time-dependent seed value, matching the default behavior of System.Random.
+            </summary>
+        </member>
+        <member name="M:SimSharp.PcgSeed.GuidBasedSeed">
+            <summary>
+            Provides a seed based on time and unique GUIDs.
+            </summary>
+        </member>
+    </members>
+</doc>

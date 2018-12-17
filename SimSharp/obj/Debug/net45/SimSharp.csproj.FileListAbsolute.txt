@@ -1,0 +1,9 @@
+C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.xml
+C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.dll
+C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.pdb
+C:\Users\Mega\source\repos\Crossroads\SimSharp\obj\Debug\net45\SimSharp.csproj.CoreCompileInputs.cache
+C:\Users\Mega\source\repos\Crossroads\SimSharp\obj\Debug\net45\SimSharp.AssemblyInfoInputs.cache
+C:\Users\Mega\source\repos\Crossroads\SimSharp\obj\Debug\net45\SimSharp.AssemblyInfo.cs
+C:\Users\Mega\source\repos\Crossroads\SimSharp\obj\Debug\net45\SimSharp.dll
+C:\Users\Mega\source\repos\Crossroads\SimSharp\obj\Debug\net45\SimSharp.pdb
+C:\Users\Mega\source\repos\Crossroads\SimSharp\obj\Debug\net45\SimSharp.csprojAssemblyReference.cache

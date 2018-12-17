@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>SimSharp</id>
+    <version>3.0.11</version>
+    <authors>Andreas Beham</authors>
+    <owners>Andreas Beham</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>https://raw.githubusercontent.com/abeham/SimSharp/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/abeham/SimSharp</projectUrl>
+    <description>Sim# aims to port the concepts used in SimPy (https://pypi.python.org/pypi/simpy) to the .NET world. It is implemented in C# and builds on the .NET Framework 4.0. Sim# uses an efficient event queue (adapted from https://bitbucket.org/BlueRaja/high-speed-priority-queue-for-c) that allows to compute models very fast. Simulating 10 years of the MachineShop sample (http://simpy.readthedocs.org/en/latest/examples/machine_shop.html) that uses preemptive resources requires only 2.5s on a Core i7 2.6Ghz. This model generates more than 5 million events.
+
+SimPy allows to model processes easily and with little boiler plate code. A process is described as a method that yields events. When an event is yielded, the process waits on it. Processes are themselves events and so it is convenient to spawn sub-processes that can either be waited upon or that run next to each other. There is no need to inherit from classes or understand a complex object oriented design.</description>
+    <releaseNotes>3.0.11
+ - Fixed bug that would cause an infinite loop in ResourcePool when requesting unavailable objects
+ 
+ 3.0.10
+ - Added target for .NET Standard 2.0 in addition to .NET Framework 4 and .NET Framework 4.5
+ - Fixed bug that would allow a process to continue if it yielded a failed process that has already been processed
+
+3.0.9
+- Fixed bug that would not dispose of resource requests if they are released before they are processed</releaseNotes>
+    <copyright>Andreas Beham</copyright>
+    <dependencies>
+      <group targetFramework=".NETFramework4.5" />
+      <group targetFramework=".NETStandard2.0" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.pdb" target="lib\net45\SimSharp.pdb" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\netstandard2.0\SimSharp.pdb" target="lib\netstandard2.0\SimSharp.pdb" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.dll" target="lib\net45\SimSharp.dll" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\net45\SimSharp.xml" target="lib\net45\SimSharp.xml" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\netstandard2.0\SimSharp.dll" target="lib\netstandard2.0\SimSharp.dll" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\bin\Debug\netstandard2.0\SimSharp.xml" target="lib\netstandard2.0\SimSharp.xml" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Analysis\ContinuousStatistics.cs" target="src\SimSharp\Analysis\ContinuousStatistics.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\EventQueue.cs" target="src\SimSharp\Collections\EventQueue.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\EventQueueNode.cs" target="src\SimSharp\Collections\EventQueueNode.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\Extensions.cs" target="src\SimSharp\Collections\Extensions.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\GenericPriorityQueue.cs" target="src\SimSharp\Collections\GenericPriorityQueue.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\GenericPriorityQueueNode.cs" target="src\SimSharp\Collections\GenericPriorityQueueNode.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\ReverseComparer.cs" target="src\SimSharp\Collections\ReverseComparer.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Collections\SimplePriorityQueue.cs" target="src\SimSharp\Collections\SimplePriorityQueue.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\ActiveObject.cs" target="src\SimSharp\Core\ActiveObject.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Environment.cs" target="src\SimSharp\Core\Environment.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Events\AllOf.cs" target="src\SimSharp\Core\Events\AllOf.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Events\AnyOf.cs" target="src\SimSharp\Core\Events\AnyOf.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Events\Condition.cs" target="src\SimSharp\Core\Events\Condition.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Events\Event.cs" target="src\SimSharp\Core\Events\Event.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Events\Process.cs" target="src\SimSharp\Core\Events\Process.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Events\Timeout.cs" target="src\SimSharp\Core\Events\Timeout.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Exceptions\EmptyScheduleException.cs" target="src\SimSharp\Core\Exceptions\EmptyScheduleException.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Preempted.cs" target="src\SimSharp\Core\Preempted.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Container.cs" target="src\SimSharp\Core\Resources\Container.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\ContainerGet.cs" target="src\SimSharp\Core\Resources\Events\ContainerGet.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\ContainerPut.cs" target="src\SimSharp\Core\Resources\Events\ContainerPut.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\FilterStoreGet.cs" target="src\SimSharp\Core\Resources\Events\FilterStoreGet.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\PreemptiveRequest.cs" target="src\SimSharp\Core\Resources\Events\PreemptiveRequest.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\Release.cs" target="src\SimSharp\Core\Resources\Events\Release.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\Request.cs" target="src\SimSharp\Core\Resources\Events\Request.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\ResourcePoolRequest.cs" target="src\SimSharp\Core\Resources\Events\ResourcePoolRequest.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\StoreGet.cs" target="src\SimSharp\Core\Resources\Events\StoreGet.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Events\StorePut.cs" target="src\SimSharp\Core\Resources\Events\StorePut.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\FilterStore.cs" target="src\SimSharp\Core\Resources\FilterStore.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\PreemptiveResource.cs" target="src\SimSharp\Core\Resources\PreemptiveResource.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\PriorityResource.cs" target="src\SimSharp\Core\Resources\PriorityResource.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\PriorityStore.cs" target="src\SimSharp\Core\Resources\PriorityStore.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Resource.cs" target="src\SimSharp\Core\Resources\Resource.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\ResourcePool.cs" target="src\SimSharp\Core\Resources\ResourcePool.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Core\Resources\Store.cs" target="src\SimSharp\Core\Resources\Store.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Random\FastRandom.cs" target="src\SimSharp\Random\FastRandom.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Random\IRandom.cs" target="src\SimSharp\Random\IRandom.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Random\Pcg.cs" target="src\SimSharp\Random\Pcg.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Random\PcgRandom.cs" target="src\SimSharp\Random\PcgRandom.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\Random\SystemRandom.cs" target="src\SimSharp\Random\SystemRandom.cs" />
+    <file src="C:\Users\Mega\source\repos\Crossroads\SimSharp\SimSharp.csproj" target="src\SimSharp\SimSharp.csproj" />
+  </files>
+</package>

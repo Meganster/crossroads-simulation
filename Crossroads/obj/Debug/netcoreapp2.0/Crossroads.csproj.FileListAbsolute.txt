@@ -1,0 +1,15 @@
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.csprojAssemblyReference.cache
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.csproj.CoreCompileInputs.cache
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.AssemblyInfoInputs.cache
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.AssemblyInfo.cs
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\Crossroads.deps.json
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\Crossroads.runtimeconfig.json
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\Crossroads.runtimeconfig.dev.json
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\Crossroads.dll
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\Crossroads.pdb
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\SimSharp.dll
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\SimSharp.pdb
+C:\Users\Mega\source\repos\Crossroads\Crossroads\bin\Debug\netcoreapp2.0\SimSharp.xml
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.csproj.CopyComplete
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.dll
+C:\Users\Mega\source\repos\Crossroads\Crossroads\obj\Debug\netcoreapp2.0\Crossroads.pdb

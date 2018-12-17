@@ -1,0 +1,58 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <SignAssembly>True</SignAssembly>
+    <AssemblyOriginatorKeyFile>SimSharp.snk</AssemblyOriginatorKeyFile>
+    <DelaySign>False</DelaySign>
+    <AssemblyName>SimSharp</AssemblyName>
+    <RootNamespace>SimSharp</RootNamespace>
+    <Version>3.0.11</Version>
+    <Authors>Andreas Beham</Authors>
+    <Description>Sim# aims to port the concepts used in SimPy (https://pypi.python.org/pypi/simpy) to the .NET world. It is implemented in C# and builds on the .NET Framework 4.0. Sim# uses an efficient event queue (adapted from https://bitbucket.org/BlueRaja/high-speed-priority-queue-for-c) that allows to compute models very fast. Simulating 10 years of the MachineShop sample (http://simpy.readthedocs.org/en/latest/examples/machine_shop.html) that uses preemptive resources requires only 2.5s on a Core i7 2.6Ghz. This model generates more than 5 million events.
+
+SimPy allows to model processes easily and with little boiler plate code. A process is described as a method that yields events. When an event is yielded, the process waits on it. Processes are themselves events and so it is convenient to spawn sub-processes that can either be waited upon or that run next to each other. There is no need to inherit from classes or understand a complex object oriented design.</Description>
+    <Product>Sim#</Product>
+    <Company>HEAL, FH Upper Austria</Company>
+    <Copyright>Andreas Beham</Copyright>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/abeham/SimSharp/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/abeham/SimSharp</PackageProjectUrl>
+    <PackageReleaseNotes>3.0.11
+ - Fixed bug that would cause an infinite loop in ResourcePool when requesting unavailable objects
+ 
+ 3.0.10
+ - Added target for .NET Standard 2.0 in addition to .NET Framework 4 and .NET Framework 4.5
+ - Fixed bug that would allow a process to continue if it yielded a failed process that has already been processed
+
+3.0.9
+- Fixed bug that would not dispose of resource requests if they are released before they are processed</PackageReleaseNotes>
+    <NeutralLanguage />
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <IncludeSource>True</IncludeSource>
+    <IncludeSymbols>True</IncludeSymbols>
+    <NoWarn>$(NoWarn);1591;1734</NoWarn>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='Debug'">
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+  </PropertyGroup>
+  
+  <PropertyGroup Condition="'$(Configuration)'=='Release'">
+    <DefineConstants></DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\SimSharp.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <Target Name="CopyDocumentationFile" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <ResolvedFileToPublish Include="@(FinalDocFile)" RelativePath="@(FinalDocFile->'%(Filename)%(Extension)')" />
+    </ItemGroup>
+  </Target>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+</Project>
